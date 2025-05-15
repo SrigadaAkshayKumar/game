@@ -1,38 +1,712 @@
-.App {
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+/* adbanner.jsx */
+
+.ad-banner {
+  margin-bottom: 20px;
+  height: 80px;
+  width: 100%;
+  background-color: #ccc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #555;
+  font-size: 16px;
+}
+
+/* header.jsx */
+
+.header {
+  background-color: #3f30db;
+  height: 100px;
+  padding: 15px 20px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.invite-header h2 {
+  font-size: 1.6rem;
+}
+.logo {
+  height: 100px;
+  width: 250px;
+}
+.profile {
+  height: 60px;
+  width: 60px;
+}
+
+/* Navbar */
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  border-top: 1px solid #ddd;
+  z-index: 1000;
+}
+
+.nav-button {
+  background-color: #e4e1e1;
+  color: rgb(0, 0, 0);
+  padding: 22px;
+  border: none;
+  font-size: 1.2rem;
+  min-width: 70px;
+  cursor: pointer;
+}
+
+/* transaction page */
+
+.done {
+  color: green;
+  font-weight: bold;
+}
+.progress {
+  color: orange;
+  font-weight: bold;
+}
+.transaction-card {
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* Homepage.jsx */
+
+.homepage-container {
+  padding-bottom: 60px; /* Space for BottomNav */
+  background-color: #f6f6f6;
+  font-family: sans-serif;
+}
+
+/* Cards grid */
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 70px 0;
+}
+
+.card {
+  margin: 10px;
+  cursor: pointer;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.card-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  object-fit: cover;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.card-label {
+  margin-top: 5px;
+  font-weight: 500;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* invite.jsx */
+
+.invite-container {
+  padding-bottom: 60px;
+  background-color: #f6f6f6;
+  font-family: sans-serif;
+}
+
+.invite-header {
+  background-color: #3f30db;
+  color: white;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.back-button {
+  position: absolute;
+  left: 20px;
+  top: 45%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: white;
+  font-size: 3rem;
+  cursor: pointer;
+}
+
+.invite-buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin: 110px 20px;
+  gap: 50px;
+}
+
+.invite-button {
+  background-color: #3f30db;
   color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 40px 15px;
+  font-size: 2rem;
+  width: 100%;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.App-link {
-  color: #61dafb;
+.invite-button:hover {
+  background-color: #3526c3;
+}
+.referral-code-box {
+  text-align: center;
+  margin-top: 20px;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  border: 1px solid #ccc;
 }
 
-@keyframes App-logo-spin {
+.referral-code {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2b7a78;
+}
+
+/* Login.jsx */
+
+.login-container {
+  background-color: #1877e8;
+  color: white;
+  padding: 40px 20px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: sans-serif;
+}
+
+.welcome-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 60px 0;
+  text-align: center;
+}
+
+.form-group {
+  width: 80%;
+  margin-bottom: 20px;
+}
+
+.input-label {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+  color: #333;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 5px;
+  top: 40%;
+  transform: translateY(-45%);
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.login-button {
+  margin-top: 20px;
+  background-color: #3f30db;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.login-button:hover {
+  background-color: #3526c3;
+}
+
+.register-text {
+  margin-top: 20px;
+  font-size: 1.5rem;
+}
+
+.register-link {
+  color: limegreen;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* Register.jsx */
+
+.register-container {
+  background-color: #1877e8;
+  height: 92vh;
+  padding: 40px 20px;
+  font-family: sans-serif;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.register-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin: 50px 0;
+  text-align: center;
+}
+
+.register-form {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+}
+
+.input-field {
+  width: 85%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  outline: none;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.register-button {
+  background-color: #3f30db;
+  color: white;
+  padding: 16px;
+  font-size: 1.6rem;
+  margin-top: 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.register-button:hover {
+  background-color: #3526c3;
+}
+
+.login-redirect {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 1.5rem;
+}
+.register-redirect {
+  margin-top: 20px;
+  font-size: 1.4rem;
+}
+.login-link {
+  color: limegreen;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* spinandwin.jsx */
+
+.spin-container {
+  padding-bottom: 70px;
+  background: #f1f3f6;
+  min-height: 100vh;
+}
+
+.total-points {
+  text-align: center;
+}
+.spin-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.spin-image {
+  margin-top: -25px;
+  width: 320px;
+  height: 320px;
+  transition: transform 3s ease-out;
+}
+
+.spinning {
+  animation: spin 4s ease-out forwards;
+}
+
+@keyframes spin {
   from {
     transform: rotate(0deg);
   }
   to {
-    transform: rotate(360deg);
+    transform: rotate(1440deg); /* 4 full spins */
   }
+}
+
+.spin-button {
+  margin-top: 50px;
+  padding: 16px 25px;
+  background-color: #3f30db;
+  color: white;
+  font-size: 1.6rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.spin-button:hover {
+  background-color: #3425c1;
+}
+
+/* watchads.jsx */
+
+.watchads-container {
+  background-color: #f1f3f6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.watchads-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.watchads-button {
+  padding: 14px 30px;
+  background-color: #3f30db;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.watchads-button:hover {
+  background-color: #3425c1;
+}
+
+/* Playandearn.jsx */
+
+.play-container {
+  min-height: 94vh;
+  background-color: #f1f3f6;
+  display: flex;
+  flex-direction: column;
+}
+
+.play-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 0 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.score-label {
+  font-size: 2rem;
+  margin: 5px 0;
+}
+.play-content h1 {
+  font-size: 2.5rem;
+  margin: 0;
+}
+.tap-image {
+  width: 120px;
+  height: 120px;
+  background-color: rgb(197, 3, 3);
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.tap-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.popup {
+  height: 240px;
+  width: 250px;
+  color: #000000;
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.popup h3 {
+  font-size: 1.5rem;
+}
+.collect-btn,
+.watch-ad-btn {
+  display: block;
+  width: 100%;
+  margin-top: 15px;
+  padding: 15px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.collect-btn {
+  background-color: #4c3ff0;
+  color: white;
+}
+
+.watch-ad-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+/* Exchange.jsx */
+
+.exchange-container {
+  background-color: #f1f3f6;
+  min-height: 100vh;
+  padding-bottom: 70px;
+  display: flex;
+  flex-direction: column;
+}
+.exchange-container h1 {
+  text-align: center;
+}
+.exchange-container h3 {
+  margin: 0;
+  font-size: 1.6rem;
+  text-align: center;
+}
+.exchange-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  padding: 20px;
+  justify-items: center;
+}
+
+.exchange-card {
+  width: 150px;
+  height: 140px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(10, 10, 10, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.exchange-card p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 0;
+}
+.exchange-button {
+  background-color: #4a34ea;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* ExchangeForm.jsx */
+
+/* Form styles */
+.exchange-form {
+  margin: 50px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.exchange-form label {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.exchange-form input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1.2rem;
+}
+
+.exchange-form button {
+  margin-top: 40px;
+  padding: 14px;
+  background-color: #5c47f5;
+  color: white;
+  font-weight: bold;
+  border: none;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* Profile.jsx */
+
+.profile-container {
+  background-color: #f1f3f6;
+  min-height: 100vh;
+  padding-bottom: 70px;
+}
+
+.profile-content {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-card {
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  text-align: center;
+  max-width: 320px;
+  width: 100%;
+}
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+
+.profile-name {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.profile-email,
+.profile-mobile {
+  font-size: 16px;
+  color: #555;
+  margin: 4px 0;
+}
+.logout-button {
+  margin-top: 20px;
+  padding: 10px 25px;
+  background-color: #5c47f5;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}
+
+/* Emailveriy.jsx */
+.verify-container {
+  max-width: 500px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffff;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  text-align: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.verify-container h2 {
+  font-size: 26px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.verify-container p {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.verify-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.verify-btn {
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.verify-btn:hover {
+  background-color: #0056b3;
+}
+
+.info-message {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #e6f7ff;
+  border-left: 4px solid #1890ff;
+  color: #0050b3;
+  border-radius: 6px;
 }
