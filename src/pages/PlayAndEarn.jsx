@@ -7,7 +7,6 @@ import { database } from "./firebase";
 const PlayAndEarn = () => {
   const [totalPoints, setTotalPoints] = useState(0);
   const [tapCount, setTapCount] = useState(0);
-  const [showPopup, setShowPopup] = useState(false);
   const navigate = useNavigate();
 
   const username = localStorage.getItem("username");
@@ -34,23 +33,6 @@ const PlayAndEarn = () => {
   const handleTap = async () => {
     const newTapCount = tapCount + 1;
     await updatePoints(1);
-
-    if (newTapCount === 50) {
-      setShowPopup(true);
-      setTapCount(0);
-    } else {
-      setTapCount(newTapCount);
-    }
-  };
-
-  const handleCollect = async () => {
-    await updatePoints(200);
-    setShowPopup(false);
-  };
-
-  const handleWatchAd = async () => {
-    await updatePoints(400);
-    setShowPopup(false);
   };
 
   return (
@@ -69,20 +51,6 @@ const PlayAndEarn = () => {
         </div>
         <div className="tap-image" onClick={handleTap}></div>
       </div>
-
-      {showPopup && (
-        <div className="popup-overlay">
-          <div className="popup">
-            <h3>Bonus! You earned ₹1</h3>
-            <button className="collect-btn" onClick={handleCollect}>
-              Collect
-            </button>
-            <button className="watch-ad-btn" onClick={handleWatchAd}>
-              Watch Ad (Collect 2x)
-            </button>
-          </div>
-        </div>
-      )}
 
       <BottomNav />
     </div>
