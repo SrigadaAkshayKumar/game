@@ -1,47 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import { database } from "./firebase";
-import { ref, get, update, onValue } from "firebase/database";
 
 const WatchAds = () => {
   const navigate = useNavigate();
-  const [totalPoints, setTotalPoints] = useState(0);
-  const [username, setUsername] = useState("");
   const [showRewardPopup, setShowRewardPopup] = useState(false);
   const [showUnavailablePopup, setShowUnavailablePopup] = useState(false);
+  const [points, setPoints] = useState(0); // 👈 Add this line
 
-  // Get username from localStorage
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("username");
-    if (loggedInUser) {
-      setUsername(loggedInUser);
-    }
-  }, []);
-
-  // Fetch total points from Firebase in real time
-  useEffect(() => {
-    if (!username) return;
-    const userRef = ref(database, `users/${username}`);
-    const unsubscribe = onValue(userRef, (snapshot) => {
-      const data = snapshot.val();
-      setTotalPoints(data?.points || 0);
-    });
-
-    return () => unsubscribe();
-  }, [username]);
-
-  // Add 100 points in Firebase
-  const addRewardPoints = async () => {
-    if (!username) return;
-    const userRef = ref(database, `users/${username}`);
-    const snapshot = await get(userRef);
-    const currentPoints = snapshot.exists() ? snapshot.val().points || 0 : 0;
-    await update(userRef, { points: currentPoints + 100 });
-  };
-
-  const handleShowRewardAd = async () => {
-    // 1. Send message to native app
+  const handleShowRewardAd = () => {
     if (window.ReactNativeWebView) {
       window.ReactNativeWebView.postMessage(
         JSON.stringify({ type: "showRewardAd" })
@@ -49,20 +16,19 @@ const WatchAds = () => {
     } else {
       setShowUnavailablePopup(true);
     }
-
-    // 2. Add reward immediately
-    await addRewardPoints();
-
-    // 3. Show reward popup
-    setShowRewardPopup(true);
   };
 
-  // Handle reward message from app (optional logic if you want to keep it)
+  const closePopup = () => {
+    setShowRewardPopup(false);
+    setShowUnavailablePopup(false);
+  };
+
   useEffect(() => {
     const handleMessage = (event) => {
       try {
         const data = JSON.parse(event.data);
         if (data.type === "rewardEarned") {
+          setPoints((prev) => prev + 200); // 👈 Add 200 points here
           setShowRewardPopup(true);
         }
       } catch (error) {
@@ -74,11 +40,6 @@ const WatchAds = () => {
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
-  const closePopup = () => {
-    setShowRewardPopup(false);
-    setShowUnavailablePopup(false);
-  };
-
   return (
     <div className="watchads-container">
       <div className="invite-header">
@@ -88,9 +49,9 @@ const WatchAds = () => {
         <h2>Watch Ads & Earn</h2>
       </div>
 
-      <h3>Total Points: {totalPoints}</h3>
-
       <div className="watchads-content">
+        <p className="points-display">Your Points: {points}</p>{" "}
+        {/* 👈 Display points */}
         <button className="watchads-button" onClick={handleShowRewardAd}>
           Click Here To Watch
         </button>
@@ -100,7 +61,7 @@ const WatchAds = () => {
         <div className="popup-overlay">
           <div className="popup">
             <h3>Reward Earned!</h3>
-            <p>You’ve earned 100 points!</p>
+            <p>You’ve earned 200 points!</p>
             <button className="collect-btn" onClick={closePopup}>
               OK
             </button>
