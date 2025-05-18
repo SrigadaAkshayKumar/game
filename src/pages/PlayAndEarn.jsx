@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import AdBanner from "../components/Adbanner";
 import BottomNav from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { ref, get, update, onValue } from "firebase/database";
@@ -85,7 +84,6 @@ const PlayAndEarn = () => {
         </div>
       )}
 
-      <AdBanner slot="play" />
       <BottomNav />
     </div>
   );

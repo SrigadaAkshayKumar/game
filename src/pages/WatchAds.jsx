@@ -1,19 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AdBanner from "../components/Adbanner";
 import Navbar from "../components/Navbar";
 
 const WatchAds = () => {
   const navigate = useNavigate();
 
   const handleShowRewardAd = () => {
-    // Send message to React Native to show rewarded ad
+    // Send JSON message to React Native app to show the rewarded ad
     if (window.ReactNativeWebView) {
-      window.ReactNativeWebView.postMessage("showRewardAd");
+      window.ReactNativeWebView.postMessage(
+        JSON.stringify({ type: "showRewardAd" })
+      );
     } else {
       alert("This feature only works in the mobile app.");
     }
   };
+
+  useEffect(() => {
+    const handleMessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data.type === "rewardEarned") {
+          alert("You’ve earned a reward!");
+          // Add reward logic here if needed (update points, etc.)
+        }
+      } catch (error) {
+        console.error("Error parsing message:", error);
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, []);
 
   return (
     <div className="watchads-container">
@@ -23,15 +41,11 @@ const WatchAds = () => {
         </button>
         <h2>Watch Ads & Earn</h2>
       </div>
-
-      <AdBanner slot="watch" />
-
       <div className="watchads-content">
         <button className="watchads-button" onClick={handleShowRewardAd}>
           Click Here To Watch
         </button>
       </div>
-
       <Navbar />
     </div>
   );

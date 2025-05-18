@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import AdBanner from "../components/Adbanner";
 import BottomNav from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { database } from "./firebase";
@@ -54,9 +53,6 @@ const Exchange = () => {
         </button>
         <h2>Withdraw</h2>
       </div>
-
-      <AdBanner slot="withdraw" />
-
       <h3>Total Points: {totalPoints}</h3>
       <h1>Select Amount Here</h1>
 

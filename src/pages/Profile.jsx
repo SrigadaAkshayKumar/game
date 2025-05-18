@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import AdBanner from "../components/Adbanner";
 import BottomNav from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { database } from "./firebase";
@@ -142,7 +141,6 @@ export const Profile = () => {
         </button>
         <h2>Profile</h2>
       </div>
-      <AdBanner slot="profile" />
       <div className="profile-content">
         <div className="profile-card">
           <h2 className="profile-name">{user.name || "N/A"}</h2>

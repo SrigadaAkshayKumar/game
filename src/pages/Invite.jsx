@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import AdBanner from "../components/Adbanner";
 
 const Invite = () => {
   const navigate = useNavigate();
@@ -68,10 +67,6 @@ const Invite = () => {
           Copy Link
         </button>
       </div>
-
-      {/* Ad Banner */}
-      <AdBanner slot="invite" />
-
       {/* Bottom Navigation */}
       <Navbar />
 

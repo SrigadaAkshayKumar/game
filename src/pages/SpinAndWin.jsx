@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import AdBanner from "../components/Adbanner";
 import Navbar from "../components/Navbar";
 import Invite from "./images/spin.png";
 import { database } from "./firebase";
@@ -97,7 +96,6 @@ const SpinAndWin = () => {
         </button>
         <h2>Spin and Win</h2>
       </div>
-      <AdBanner slot="spin" />
       <div className="total-points">
         <h2>Total Points: {totalPoints}</h2>
       </div>
