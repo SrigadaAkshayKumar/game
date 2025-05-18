@@ -1,8 +1,10 @@
 import React from "react";
 
 const AdBanner = ({ slot }) => {
+  const isAppView =
+    new URLSearchParams(window.location.search).get("appView") === "true";
   const adUnitId = process.env[`REACT_APP_AD_UNIT_${slot.toUpperCase()}`];
-
+  if (isAppView) return null;
   if (!adUnitId) {
     return <div className="ad-banner">Ad Unit Not Configured</div>;
   }
