@@ -11,7 +11,6 @@ const WatchAds = () => {
   const [totalPoints, setTotalPoints] = useState(0);
   const username = localStorage.getItem("username");
 
-  // Real-time points sync
   useEffect(() => {
     if (!username) return;
     const userRef = ref(database, `users/${username}`);
@@ -25,7 +24,6 @@ const WatchAds = () => {
 
   const updateUserPoints = async (earnedPoints) => {
     if (!username) return;
-
     const userRef = ref(database, `users/${username}`);
     try {
       const snapshot = await get(userRef);
@@ -38,24 +36,34 @@ const WatchAds = () => {
 
   const handleShowRewardAd = () => {
     if (window.ReactNativeWebView) {
+      // Generate a unique ID or timestamp for this ad session
+      const rewardId = Date.now();
+      window.localStorage.setItem("lastAdSessionId", rewardId);
       window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: "showRewardAd" })
+        JSON.stringify({ type: "showRewardAd", rewardId })
       );
     } else {
       setShowUnavailablePopup(true);
     }
   };
 
-  // Wait 5 seconds after ad reward is earned before showing popup & updating points
   useEffect(() => {
     const handleMessage = (event) => {
       try {
         const data = JSON.parse(event.data);
         if (data.type === "rewardEarned") {
+          const lastSessionId = window.localStorage.getItem("lastAdSessionId");
+          if (data.rewardId && data.rewardId !== lastSessionId) {
+            console.warn("Ignoring duplicate reward.");
+            return;
+          }
+
           setTimeout(async () => {
             await updateUserPoints(200);
             setShowRewardPopup(true);
-          }, 5000);
+            // Clear session to allow next reward
+            window.localStorage.removeItem("lastAdSessionId");
+          }, 1000);
         }
       } catch (error) {
         console.error("Error parsing message:", error);
