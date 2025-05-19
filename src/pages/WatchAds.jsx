@@ -36,9 +36,8 @@ const WatchAds = () => {
 
   const handleShowRewardAd = () => {
     if (window.ReactNativeWebView) {
-      // Generate a unique ID or timestamp for this ad session
-      const rewardId = Date.now();
-      window.localStorage.setItem("lastAdSessionId", rewardId);
+      const rewardId = Date.now().toString(); // Unique session ID
+      localStorage.setItem("lastAdSessionId", rewardId);
       window.ReactNativeWebView.postMessage(
         JSON.stringify({ type: "showRewardAd", rewardId })
       );
@@ -52,21 +51,22 @@ const WatchAds = () => {
       try {
         const data = JSON.parse(event.data);
         if (data.type === "rewardEarned") {
-          const lastSessionId = window.localStorage.getItem("lastAdSessionId");
-          if (data.rewardId && data.rewardId !== lastSessionId) {
-            console.warn("Ignoring duplicate reward.");
-            return;
-          }
+          const lastSessionId = localStorage.getItem("lastAdSessionId");
 
-          setTimeout(async () => {
-            await updateUserPoints(200);
-            setShowRewardPopup(true);
-            // Clear session to allow next reward
-            window.localStorage.removeItem("lastAdSessionId");
-          }, 1000);
+          if (data.rewardId && data.rewardId === lastSessionId) {
+            setTimeout(async () => {
+              await updateUserPoints(200);
+              setShowRewardPopup(true);
+              localStorage.removeItem("lastAdSessionId");
+            }, 1000);
+          } else {
+            console.warn(
+              "Ignored reward due to mismatched or missing rewardId."
+            );
+          }
         }
       } catch (error) {
-        console.error("Error parsing message:", error);
+        console.error("Error parsing reward message:", error);
       }
     };
 
