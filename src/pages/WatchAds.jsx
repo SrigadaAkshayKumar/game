@@ -1,20 +1,43 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import { database } from "./firebase";
+import { ref, get, update, onValue } from "firebase/database";
 
 const WatchAds = () => {
   const navigate = useNavigate();
   const [showRewardPopup, setShowRewardPopup] = useState(false);
   const [showUnavailablePopup, setShowUnavailablePopup] = useState(false);
-  const [points, setPoints] = useState(0);
+  const [totalPoints, setTotalPoints] = useState(0);
+  const username = localStorage.getItem("username");
+
+  // Real-time points sync
+  useEffect(() => {
+    if (!username) return;
+    const userRef = ref(database, `users/${username}`);
+    const unsubscribe = onValue(userRef, (snapshot) => {
+      const data = snapshot.val();
+      setTotalPoints(data?.points || 0);
+    });
+
+    return () => unsubscribe();
+  }, [username]);
+
+  const updateUserPoints = async (earnedPoints) => {
+    if (!username) return;
+
+    const userRef = ref(database, `users/${username}`);
+    try {
+      const snapshot = await get(userRef);
+      const currentPoints = snapshot.exists() ? snapshot.val().points || 0 : 0;
+      await update(userRef, { points: currentPoints + earnedPoints });
+    } catch (error) {
+      console.error("Error updating points:", error);
+    }
+  };
 
   const handleShowRewardAd = () => {
     if (window.ReactNativeWebView) {
-      // ✅ Add points immediately
-      setPoints((prev) => prev + 200);
-      setShowRewardPopup(true);
-
-      // ✅ Send message to native app to show the ad
       window.ReactNativeWebView.postMessage(
         JSON.stringify({ type: "showRewardAd" })
       );
@@ -23,19 +46,16 @@ const WatchAds = () => {
     }
   };
 
-  const closePopup = () => {
-    setShowRewardPopup(false);
-    setShowUnavailablePopup(false);
-  };
-
-  // Optional: Listen for reward confirmation from React Native (still works)
+  // Wait 5 seconds after ad reward is earned before showing popup & updating points
   useEffect(() => {
     const handleMessage = (event) => {
       try {
         const data = JSON.parse(event.data);
         if (data.type === "rewardEarned") {
-          setPoints((prev) => prev + 200);
-          setShowRewardPopup(true);
+          setTimeout(async () => {
+            await updateUserPoints(200);
+            setShowRewardPopup(true);
+          }, 5000);
         }
       } catch (error) {
         console.error("Error parsing message:", error);
@@ -46,6 +66,11 @@ const WatchAds = () => {
     return () => window.removeEventListener("message", handleMessage);
   }, []);
 
+  const closePopup = () => {
+    setShowRewardPopup(false);
+    setShowUnavailablePopup(false);
+  };
+
   return (
     <div className="watchads-container">
       <div className="invite-header">
@@ -54,9 +79,8 @@ const WatchAds = () => {
         </button>
         <h2>Watch Ads & Earn</h2>
       </div>
-
+      <h3>Your Points: {totalPoints}</h3>
       <div className="watchads-content">
-        <p className="points-display">Your Points: {points}</p>
         <button className="watchads-button" onClick={handleShowRewardAd}>
           Click Here To Watch
         </button>
