@@ -8,6 +8,7 @@ const WatchAds = () => {
   const navigate = useNavigate();
   const [showRewardPopup, setShowRewardPopup] = useState(false);
   const [showUnavailablePopup, setShowUnavailablePopup] = useState(false);
+  const [isLoadingAd, setIsLoadingAd] = useState(false);
   const [totalPoints, setTotalPoints] = useState(0);
   const username = localStorage.getItem("username");
 
@@ -36,43 +37,24 @@ const WatchAds = () => {
 
   const handleShowRewardAd = () => {
     if (window.ReactNativeWebView) {
-      const rewardId = Date.now().toString(); // Unique session ID
-      localStorage.setItem("lastAdSessionId", rewardId);
+      // Send message to native app to show ad
       window.ReactNativeWebView.postMessage(
-        JSON.stringify({ type: "showRewardAd", rewardId })
+        JSON.stringify({ type: "showRewardAd" })
       );
     } else {
       setShowUnavailablePopup(true);
+      return;
     }
+
+    // Show loading and start 5 second timer
+    setIsLoadingAd(true);
+
+    setTimeout(async () => {
+      await updateUserPoints(200);
+      setIsLoadingAd(false);
+      setShowRewardPopup(true);
+    }, 5000);
   };
-
-  useEffect(() => {
-    const handleMessage = (event) => {
-      try {
-        const data = JSON.parse(event.data);
-        if (data.type === "rewardEarned") {
-          const lastSessionId = localStorage.getItem("lastAdSessionId");
-
-          if (data.rewardId && data.rewardId === lastSessionId) {
-            setTimeout(async () => {
-              await updateUserPoints(200);
-              setShowRewardPopup(true);
-              localStorage.removeItem("lastAdSessionId");
-            }, 1000);
-          } else {
-            console.warn(
-              "Ignored reward due to mismatched or missing rewardId."
-            );
-          }
-        }
-      } catch (error) {
-        console.error("Error parsing reward message:", error);
-      }
-    };
-
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, []);
 
   const closePopup = () => {
     setShowRewardPopup(false);
@@ -89,11 +71,16 @@ const WatchAds = () => {
       </div>
       <h3>Your Points: {totalPoints}</h3>
       <div className="watchads-content">
-        <button className="watchads-button" onClick={handleShowRewardAd}>
-          Click Here To Watch
+        <button
+          className="watchads-button"
+          onClick={handleShowRewardAd}
+          disabled={isLoadingAd}
+        >
+          {isLoadingAd ? "Loading Ad..." : "Click Here To Watch"}
         </button>
       </div>
 
+      {/* Reward Popup */}
       {showRewardPopup && (
         <div className="popup-overlay">
           <div className="popup">
@@ -106,6 +93,7 @@ const WatchAds = () => {
         </div>
       )}
 
+      {/* Unavailable Popup */}
       {showUnavailablePopup && (
         <div className="popup-overlay">
           <div className="popup">
@@ -114,6 +102,17 @@ const WatchAds = () => {
             <button className="collect-btn" onClick={closePopup}>
               OK
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Loading Overlay */}
+      {isLoadingAd && (
+        <div className="popup-overlay">
+          <div className="popup">
+            <h3>Loading Ad...</h3>
+            <p>Please wait while the ad finishes.</p>
+            <div className="spinner" />
           </div>
         </div>
       )}
