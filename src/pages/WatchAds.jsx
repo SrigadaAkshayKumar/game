@@ -6,10 +6,15 @@ const WatchAds = () => {
   const navigate = useNavigate();
   const [showRewardPopup, setShowRewardPopup] = useState(false);
   const [showUnavailablePopup, setShowUnavailablePopup] = useState(false);
-  const [points, setPoints] = useState(0); // 👈 Add this line
+  const [points, setPoints] = useState(0);
 
   const handleShowRewardAd = () => {
     if (window.ReactNativeWebView) {
+      // ✅ Add points immediately
+      setPoints((prev) => prev + 200);
+      setShowRewardPopup(true);
+
+      // ✅ Send message to native app to show the ad
       window.ReactNativeWebView.postMessage(
         JSON.stringify({ type: "showRewardAd" })
       );
@@ -23,12 +28,13 @@ const WatchAds = () => {
     setShowUnavailablePopup(false);
   };
 
+  // Optional: Listen for reward confirmation from React Native (still works)
   useEffect(() => {
     const handleMessage = (event) => {
       try {
         const data = JSON.parse(event.data);
         if (data.type === "rewardEarned") {
-          setPoints((prev) => prev + 200); // 👈 Add 200 points here
+          setPoints((prev) => prev + 200);
           setShowRewardPopup(true);
         }
       } catch (error) {
@@ -50,8 +56,7 @@ const WatchAds = () => {
       </div>
 
       <div className="watchads-content">
-        <p className="points-display">Your Points: {points}</p>{" "}
-        {/* 👈 Display points */}
+        <p className="points-display">Your Points: {points}</p>
         <button className="watchads-button" onClick={handleShowRewardAd}>
           Click Here To Watch
         </button>
